@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Management System - View Products</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app-container">
+  <nav class="side-menu">
+    <div class="menu-header">
+      <h2>Navigation</h2>
+    </div>
+    <ul class="menu-items">
+      <li><a href="home.html" class="menu-item active">Home</a></li>
+      <li><a href="products.html" class="menu-item">View Products</a></li>
+      <li><a href="add-product.html" class="menu-item">Add Product</a></li>
+      <li><a href="recent.html" class="menu-item">Recently Viewed</a></li>
+      <li><a href="history.html" class="menu-item">View History</a></li>
+      <li><a href="zone-management.html" class="menu-item">Zone Management</a></li>
+      <li><a href="settings.html" class="menu-item">Settings</a></li>
+
+    </ul>
+  </nav>
+
+  <main class="content-area">
+    <section id="product-page" class="page active">
+      <h1>Products</h1>
+      <div class="search-filter">
+        <input type="text" id="search-input" placeholder="Search products..." />
+        <select id="filter-select">
+          <option value="">All Zones</option>
+          <option value="Zone A">Zone A</option>
+          <option value="Zone B">Zone B</option>
+        </select>
+      </div>
+      <table id="product-table" class="product-table">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Batch Number</th>
+          <th>Quantity</th>
+          <th>PPA</th>
+          <th>SHP</th>
+          <th>Expiration Date</th>
+          <th>Zone</th>
+          <th>Emplacement</th>
+          <th>Description</th>
+        </tr>
+        </thead>
+        <tbody id="product-list">
+        <!-- Products will be displayed here -->
+        </tbody>
+      </table>
+    </section>
+  </main>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

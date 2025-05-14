@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app-container">
+  <nav class="side-menu">
+    <div class="menu-header">
+      <h2>Navigation</h2>
+    </div>
+    <ul class="menu-items">
+      <li><a href="home.html" class="menu-item active">Home</a></li>
+      <li><a href="products.html" class="menu-item">View Products</a></li>
+      <li><a href="add-product.html" class="menu-item">Add Product</a></li>
+      <li><a href="recent.html" class="menu-item">Recently Viewed</a></li>
+      <li><a href="history.html" class="menu-item">View History</a></li>
+      <li><a href="zone-management.html" class="menu-item">Zone Management</a></li>
+      <li><a href="settings.html" class="menu-item">Settings</a></li>
+    </ul>
+  </nav>
+
+  <main class="content-area">
+    <h1>Settings</h1>
+
+    <div class="settings-section">
+      <h2>Language</h2>
+      <select id="language-select" onchange="changeLanguage()">
+        <option value="en">English</option>
+        <option value="es">Spanish</option>
+        <option value="fr">French</option>
+      </select>
+    </div>
+
+    <div class="settings-section">
+      <h2>Appearance</h2>
+      <label>
+        <input type="checkbox" id="dark-mode-toggle" onchange="toggleDarkMode()">
+        Enable Dark Mode
+      </label>
+    </div>
+  </main>
+</div>
+
+<script src="js/settings.js"></script>
+</body>
+</html>
