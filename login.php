@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login | Setifismed</title>
-  <link rel="stylesheet" href="products/styles.css">
+  <link rel="stylesheet" href="styles/css/login.css">
 </head>
 <body>
 <!-- Login Page -->
@@ -25,7 +25,7 @@
       <p>Please enter your details to sign in</p>
     </div>
 
-    <form class="login-form" id="loginForm">
+    <form class="login-form" id="loginForm" method="post">
       <div class="form-group">
         <label for="email">Email</label>
         <input type="email" id="email" placeholder="Enter your email" required>
@@ -45,6 +45,5 @@
   </div>
 </div>
 
-<script src="js/script.js"></script>
 </body>
 </html>
