@@ -1,62 +1,970 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Product Management System - View Products</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: rgba(67, 97, 238, 0.1);
+            --primary-dark: #3a56d4;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+            --info: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #e9ecef;
+            --gray-dark: #6c757d;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--dark);
+            background-color: #f5f7fa;
+            padding: 20px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+        }
+
+        .stat-card.primary::before {
+            background-color: var(--primary);
+        }
+
+        .stat-card.success::before {
+            background-color: var(--success);
+        }
+
+        .stat-card.warning::before {
+            background-color: var(--warning);
+        }
+
+        .stat-card.danger::before {
+            background-color: var(--danger);
+        }
+
+        .stat-card .icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+
+        .stat-card.primary .icon {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .stat-card.success .icon {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: var(--success);
+        }
+
+        .stat-card.warning .icon {
+            background-color: rgba(243, 156, 18, 0.1);
+            color: var(--warning);
+        }
+
+        .stat-card.danger .icon {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: var(--danger);
+        }
+
+        .stat-card .value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-card .label {
+            color: var(--gray-dark);
+            font-size: 0.85rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #3a56d5;
+        }
+
+        .btn-outline {
+            background-color: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-light);
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--dark);
+            border: 1px solid var(--gray);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--light);
+        }
+
+        .inventory-card {
+            border: none;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            background-color: white;
+        }
+
+        .card-header {
+            padding: 1.25rem 1.5rem;
+            background-color: white;
+            border-bottom: 1px solid var(--gray);
+        }
+
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            width: 100%;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin: 0;
+        }
+
+        .header-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .search-box {
+            position: relative;
+            flex-grow: 1;
+            max-width: 400px;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-dark);
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            border: 1px solid var(--gray);
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-sm {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--gray-dark);
+            border: 1px solid var(--gray);
+        }
+
+        .btn-secondary:hover {
+            background-color: #f8f9fa;
+            color: var(--dark);
+        }
+
+        .card-body {
+            padding: 0;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .modern-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 0.9rem;
+        }
+
+        .modern-table thead th {
+            position: sticky;
+            top: 0;
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem;
+            font-weight: 500;
+            text-align: left;
+            z-index: 10;
+        }
+
+        .modern-table thead th i {
+            margin-left: 0.25rem;
+            opacity: 0.7;
+            font-size: 0.8rem;
+        }
+
+        .modern-table tbody tr {
+            transition: var(--transition);
+        }
+
+        .modern-table tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .modern-table tbody tr:hover {
+            background-color: var(--primary-light);
+        }
+
+        .modern-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--gray);
+            vertical-align: middle;
+        }
+
+        .product-cell {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .product-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-name {
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .product-description {
+            font-size: 0.8rem;
+            color: var(--gray-dark);
+            margin-top: 0.25rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .badge-success {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: #2ecc71;
+        }
+
+        .badge-warning {
+            background-color: rgba(243, 156, 18, 0.1);
+            color: #f39c12;
+        }
+
+        .badge-danger {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-badge.active {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: #2ecc71;
+        }
+
+        .status-badge.inactive {
+            background-color: rgba(108, 117, 125, 0.1);
+            color: var(--gray-dark);
+        }
+
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            border: none;
+            color: var(--gray-dark);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-icon:hover {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .card-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--gray);
+            background-color: white;
+        }
+
+        .table-pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: var(--gray-dark);
+        }
+
+        .pagination-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .rows-per-page {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .rows-per-page select {
+            padding: 0.25rem 0.5rem;
+            border: 1px solid var(--gray);
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        .pagination-controls {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .pagination-controls button.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        @media (max-width: 992px) {
+            .modern-table td, .modern-table th {
+                padding: 0.75rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                max-width: 100%;
+            }
+
+            .table-actions {
+                justify-content: flex-end;
+            }
+
+            .modern-table thead {
+                display: none;
+            }
+
+            .modern-table tbody tr {
+                display: block;
+                margin-bottom: 1rem;
+                border-radius: var(--border-radius);
+                box-shadow: var(--box-shadow);
+                padding: 0.5rem;
+            }
+
+            .modern-table td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.75rem 1rem;
+                border-bottom: 1px solid var(--gray);
+            }
+
+            .modern-table td::before {
+                content: attr(data-label);
+                font-weight: 500;
+                margin-right: 1rem;
+                color: var(--gray-dark);
+            }
+
+            .table-actions {
+                justify-content: flex-end;
+            }
+
+            .table-pagination {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+
+            .pagination-info {
+                justify-content: space-between;
+                width: 100%;
+            }
+
+            .pagination-controls {
+                justify-content: center;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .product-cell {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .product-image {
+                align-self: center;
+            }
+
+            .table-actions {
+                gap: 0.25rem;
+            }
+
+            .btn-sm {
+                padding: 0.4rem 0.6rem;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="app-container">
-  <nav class="side-menu">
-    <div class="menu-header">
-      <h2>Navigation</h2>
+<?php
+// Database connection (replace with your credentials)
+$host = 'localhost';
+$dbname = 'inventory_db';
+$username = 'root';
+$password = '';
+
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+die("Could not connect to the database: " . $e->getMessage());
+}
+
+// Get filter parameters from URL
+$searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
+$zoneFilter = isset($_GET['zone']) ? $_GET['zone'] : '';
+$letterFilter = isset($_GET['letter']) ? $_GET['letter'] : '';
+
+// Pagination variables
+$rowsPerPage = isset($_GET['rows']) ? (int)$_GET['rows'] : 5;
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($page - 1) * $rowsPerPage;
+
+// Build base SQL query
+$sql = "SELECT * FROM products WHERE 1=1";
+$countSql = "SELECT COUNT(*) as total FROM products WHERE 1=1";
+
+// Add filters to query
+$params = [];
+$countParams = [];
+
+if (!empty($searchTerm)) {
+$sql .= " AND (product_name LIKE :search OR batch_no LIKE :search)";
+$countSql .= " AND (product_name LIKE :search OR batch_no LIKE :search)";
+$params[':search'] = "%$searchTerm%";
+$countParams[':search'] = "%$searchTerm%";
+}
+
+if (!empty($zoneFilter)) {
+$sql .= " AND zone = :zone";
+$countSql .= " AND zone = :zone";
+$params[':zone'] = $zoneFilter;
+$countParams[':zone'] = $zoneFilter;
+}
+
+if (!empty($letterFilter)) {
+$sql .= " AND product_name LIKE :letter";
+$countSql .= " AND product_name LIKE :letter";
+$params[':letter'] = "$letterFilter%";
+$countParams[':letter'] = "$letterFilter%";
+}
+
+// Add sorting if needed (not implemented in this example)
+$sql .= " LIMIT :offset, :rowsPerPage";
+
+// Prepare and execute count query
+$stmtCount = $pdo->prepare($countSql);
+foreach ($countParams as $key => $value) {
+$stmtCount->bindValue($key, $value);
+}
+$stmtCount->execute();
+$totalRows = $stmtCount->fetchColumn();
+
+// Calculate total pages
+$totalPages = ceil($totalRows / $rowsPerPage);
+
+// Prepare and execute main query
+$stmt = $pdo->prepare($sql);
+foreach ($params as $key => $value) {
+$stmt->bindValue($key, $value);
+}
+$stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+$stmt->bindValue(':rowsPerPage', $rowsPerPage, PDO::PARAM_INT);
+$stmt->execute();
+$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Sample data (replace with your actual database query)
+$stats = [
+'total_products' => 1248,
+'in_stock' => 1120,
+'categories' => 42,
+'low_stock' => 128
+];
+
+// Zones for filter dropdown
+$zones = ['Zone A', 'Zone B', 'Zone C', 'Zone D'];
+?>
+<div class="card inventory-card">
+    <div class="stats-grid">
+        <div class="stat-card primary">
+            <div class="icon">
+                <i class="fas fa-box"></i>
+            </div>
+            <div class="value"><?php echo number_format($stats['total_products']); ?></div>
+            <div class="label">Total Products</div>
+        </div>
+        <div class="stat-card success">
+            <div class="icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="value"><?php echo number_format($stats['in_stock']); ?></div>
+            <div class="label">In Stock</div>
+        </div>
+        <div class="stat-card warning">
+            <div class="icon">
+                <i class="fas fa-tags"></i>
+            </div>
+            <div class="value"><?php echo number_format($stats['categories']); ?></div>
+            <div class="label">Categories</div>
+        </div>
+        <div class="stat-card danger">
+            <div class="icon">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <div class="value"><?php echo number_format($stats['low_stock']); ?></div>
+            <div class="label">Low Stock</div>
+        </div>
     </div>
-    <ul class="menu-items">
-      <li><a href="home.html" class="menu-item active">Home</a></li>
-      <li><a href="products.html" class="menu-item">View Products</a></li>
-      <li><a href="add-product.html" class="menu-item">Add Product</a></li>
-      <li><a href="recent.html" class="menu-item">Recently Viewed</a></li>
-      <li><a href="history.html" class="menu-item">View History</a></li>
-      <li><a href="zone-management.html" class="menu-item">Zone Management</a></li>
-      <li><a href="settings.html" class="menu-item">Settings</a></li>
 
-    </ul>
-  </nav>
+    <div class="card-header">
+        <div class="header-content">
+            <h3 class="card-title">Product Inventory</h3>
+            <div class="header-controls">
+                <form method="get" class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" name="search" placeholder="Search products..." value="<?php echo htmlspecialchars($searchTerm); ?>">
+                </form>
+                <div class="filter-controls">
+                    <form method="get" class="filter-form">
+                        <input type="hidden" name="search" value="<?php echo htmlspecialchars($searchTerm); ?>">
+                        <input type="hidden" name="letter" value="<?php echo htmlspecialchars($letterFilter); ?>">
+                        <input type="hidden" name="rows" value="<?php echo $rowsPerPage; ?>">
 
-  <main class="content-area">
-    <section id="product-page" class="page active">
-      <h1>Products</h1>
-      <div class="search-filter">
-        <input type="text" id="search-input" placeholder="Search products..." />
-        <select id="filter-select">
-          <option value="">All Zones</option>
-          <option value="Zone A">Zone A</option>
-          <option value="Zone B">Zone B</option>
-        </select>
-      </div>
-      <table id="product-table" class="product-table">
-        <thead>
-        <tr>
-          <th>Name</th>
-          <th>Batch Number</th>
-          <th>Quantity</th>
-          <th>PPA</th>
-          <th>SHP</th>
-          <th>Expiration Date</th>
-          <th>Zone</th>
-          <th>Emplacement</th>
-          <th>Description</th>
-        </tr>
-        </thead>
-        <tbody id="product-list">
-        <!-- Products will be displayed here -->
-        </tbody>
-      </table>
-    </section>
-  </main>
+                        <select name="zone" class="zone-filter" onchange="this.form.submit()">
+                            <option value="">Filter by Zone</option>
+                            <?php foreach ($zones as $zone): ?>
+                            <option value="<?php echo $zone; ?>" <?php echo $zoneFilter === $zone ? 'selected' : ''; ?>>
+                            <?php echo $zone; ?>
+                            </option>
+                            <?php endforeach; ?>
+                        </select>
+
+                        <select name="letter" class="letter-filter" onchange="this.form.submit()">
+                            <option value="">Filter by First Letter</option>
+                            <?php foreach (range('A', 'Z') as $letter): ?>
+                            <option value="<?php echo $letter; ?>" <?php echo $letterFilter === $letter ? 'selected' : ''; ?>>
+                            <?php echo $letter; ?>
+                            </option>
+                            <?php endforeach; ?>
+                        </select>
+
+                        <button type="button" class="btn btn-secondary btn-sm">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                        <a href="add_product.php" class="btn btn-primary btn-sm">
+                            <i class="fas fa-plus"></i> Add Product
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="modern-table">
+                <thead>
+                <tr>
+                    <th>ID <i class="fas fa-sort"></i></th>
+                    <th>Product Name</th>
+                    <th>Batch No.</th>
+                    <th>Qty <i class="fas fa-sort"></i></th>
+                    <th>PPA <i class="fas fa-sort"></i></th>
+                    <th>SHP <i class="fas fa-sort"></i></th>
+                    <th>Expiration <i class="fas fa-sort"></i></th>
+                    <th>Zone</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php if (empty($products)): ?>
+                <tr>
+                    <td colspan="8" style="text-align: center;">No products found</td>
+                </tr>
+                <?php else: ?>
+                <?php foreach ($products as $product): ?>
+                <tr>
+                    <td data-label="ID"><?php echo htmlspecialchars($product['id']); ?></td>
+                    <td data-label="Product Name"><?php echo htmlspecialchars($product['product_name']); ?></td>
+                    <td data-label="Batch No."><?php echo htmlspecialchars($product['batch_no']); ?></td>
+                    <td data-label="Qty">
+                        <?php
+                  $qty = (int)$product['quantity'];
+                  if ($qty > 50) {
+                        echo '<span class="badge badge-success">' . $qty . '</span>';
+                        } elseif ($qty > 10) {
+                        echo '<span class="badge badge-warning">' . $qty . '</span>';
+                        } else {
+                        echo '<span class="badge badge-danger">' . $qty . '</span>';
+                        }
+                        ?>
+                    </td>
+                    <td data-label="PPA">$<?php echo number_format($product['ppa'], 2); ?></td>
+                    <td data-label="SHP">$<?php echo number_format($product['shp'], 2); ?></td>
+                    <td data-label="Expiration"><?php echo htmlspecialchars($product['expiration_date']); ?></td>
+                    <td data-label="Zone"><?php echo htmlspecialchars($product['zone']); ?></td>
+                </tr>
+                <?php endforeach; ?>
+                <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card-footer">
+        <div class="table-pagination">
+            <div class="pagination-info">
+        <span>Showing <span class="current-range">
+          <?php
+            $start = $offset + 1;
+            $end = min($offset + $rowsPerPage, $totalRows);
+            echo "$start-$end";
+          ?>
+        </span> of <span class="total-items"><?php echo number_format($totalRows); ?></span> products</span>
+                <div class="rows-per-page">
+                    <span>Rows per page:</span>
+                    <form method="get" class="rows-form">
+                        <input type="hidden" name="search" value="<?php echo htmlspecialchars($searchTerm); ?>">
+                        <input type="hidden" name="zone" value="<?php echo htmlspecialchars($zoneFilter); ?>">
+                        <input type="hidden" name="letter" value="<?php echo htmlspecialchars($letterFilter); ?>">
+                        <select name="rows" onchange="this.form.submit()">
+                            <option value="5" <?php echo ($rowsPerPage == 5 ? 'selected="selected"' : ''); ?>>5</option>
+                            <option value="10" <?php echo ($rowsPerPage == 10 ? 'selected="selected"' : ''); ?>>10</option>
+                            <option value="25" <?php echo ($rowsPerPage == 25 ? 'selected="selected"' : ''); ?>>25</option>
+                            <option value="50" <?php echo ($rowsPerPage == 50 ? 'selected="selected"' : ''); ?>>50</option>
+                        </select>
+                    </form>
+                </div>
+            </div>
+            <div class="pagination-controls">
+                <?php if ($page > 1): ?>
+                <a href="?<?php echo buildQueryString(['page' => $page - 1]); ?>" class="btn btn-secondary btn-sm">
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+                <?php else: ?>
+                <button class="btn btn-secondary btn-sm" disabled>
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <?php endif; ?>
+
+                <?php
+          // Show page numbers
+          $startPage = max(1, $page - 2);
+          $endPage = min($totalPages, $page + 2);
+
+          if ($startPage > 1) {
+                echo '<a href="?' . buildQueryString(['page' => 1]) . '" class="btn btn-secondary btn-sm">1</a>';
+                if ($startPage > 2) {
+                echo '<span class="btn btn-secondary btn-sm" disabled>...</span>';
+                }
+                }
+
+                for ($i = $startPage; $i <= $endPage; $i++) {
+                $active = $i == $page ? 'active' : '';
+                echo '<a href="?' . buildQueryString(['page' => $i]) . '" class="btn btn-secondary btn-sm ' . $active . '">' . $i . '</a>';
+                }
+
+                if ($endPage < $totalPages) {
+                if ($endPage < $totalPages - 1) {
+                echo '<span class="btn btn-secondary btn-sm" disabled>...</span>';
+                }
+                echo '<a href="?' . buildQueryString(['page' => $totalPages]) . '" class="btn btn-secondary btn-sm">' . $totalPages . '</a>';
+                }
+                ?>
+
+                <?php if ($page < $totalPages): ?>
+                <a href="?<?php echo buildQueryString(['page' => $page + 1]); ?>" class="btn btn-secondary btn-sm">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+                <?php else: ?>
+                <button class="btn btn-secondary btn-sm" disabled>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
 </div>
 
-<script src="js/app.js"></script>
+<?php
+// Helper function to build query string with current parameters
+function buildQueryString($newParams = []) {
+    $params = [
+        'search' => $_GET['search'] ?? '',
+'zone' => $_GET['zone'] ?? '',
+'letter' => $_GET['letter'] ?? '',
+'rows' => $_GET['rows'] ?? 5,
+'page' => $_GET['page'] ?? 1
+];
+
+$params = array_merge($params, $newParams);
+return http_build_query($params);
+}
+?>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Make table rows clickable (for mobile)
+        const tableRows = document.querySelectorAll('.modern-table tbody tr');
+
+        tableRows.forEach(row => {
+            row.addEventListener('click', function(e) {
+                if (!e.target.closest('.table-actions') && window.innerWidth <= 768) {
+                    // Navigate to product detail or expand row
+                    const productId = row.querySelector('td').textContent;
+                    window.location.href = 'product_detail.php?id=' + productId;
+                }
+            });
+        });
+
+        // Sortable columns
+        const sortableHeaders = document.querySelectorAll('.modern-table thead th');
+        sortableHeaders.forEach(header => {
+            if (header.querySelector('i')) {
+                header.style.cursor = 'pointer';
+                header.addEventListener('click', function() {
+                    const column = header.textContent.trim().replace(/ [↑↓]$/, '');
+                    const currentSort = header.getAttribute('data-sort') || 'none';
+
+                    // Determine new sort direction
+                    let newSort, newDirection;
+                    if (currentSort === 'none' || currentSort === 'desc') {
+                        newSort = 'asc';
+                        newDirection = '↑';
+                    } else {
+                        newSort = 'desc';
+                        newDirection = '↓';
+                    }
+
+                    // Update UI
+                    sortableHeaders.forEach(h => {
+                        h.setAttribute('data-sort', 'none');
+                        const icon = h.querySelector('i');
+                        if (icon) {
+                            h.textContent = h.textContent.replace(/ [↑↓]$/, '');
+                            h.appendChild(icon);
+                        }
+                    });
+
+                    header.setAttribute('data-sort', newSort);
+                    header.textContent = header.textContent.replace(/ [↑↓]$/, '') + ' ' + newDirection;
+
+                    // In a real app, you would reload with sort parameters
+                    const url = new URL(window.location.href);
+                    url.searchParams.set('sort', column);
+                    url.searchParams.set('direction', newSort);
+                    window.location.href = url.toString();
+                });
+            }
+        });
+
+        // Search functionality
+        const searchInput = document.querySelector('.search-box input');
+        const searchForm = document.querySelector('.search-box');
+
+        // Debounce function to prevent rapid firing
+        function debounce(func, wait) {
+            let timeout;
+            return function() {
+                const context = this, args = arguments;
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                    func.apply(context, args);
+                }, wait);
+            };
+        }
+
+        // Submit form after typing stops
+        searchInput.addEventListener('input', debounce(function() {
+            searchForm.submit();
+        }, 500));
+    });
+</script>
 </body>
 </html>
