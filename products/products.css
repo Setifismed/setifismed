@@ -1,0 +1,32 @@
+:root {
+    --primary: #4361ee;
+    --primary-light: rgba(67, 97, 238, 0.1);
+    --primary-dark: #3a56d4;
+    --secondary: #3f37c9;
+    --success: #4cc9f0;
+    --danger: #f72585;
+    --warning: #f8961e;
+    --info: #4895ef;
+    --light: #f8f9fa;
+    --dark: #212529;
+    --gray: #e9ecef;
+    --gray-dark: #6c757d;
+    --border-radius: 8px;
+    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    --transition: all 0.3s ease;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--dark);
+    background-color: #f5f7fa;
+    padding: 20px;
+}
+
+/* Add additional styles here as in your original code */
